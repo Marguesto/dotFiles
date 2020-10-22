@@ -14,14 +14,7 @@ Plugin 'VundleVim/Vundle.vim'
 call vundle#end()            " required
 filetype plugin indent on    " required
 
-
-
-
 let g:vimspector_enable_mappings = 'HUMAN'
-
-
-
-
 
 " plugins
 let need_to_install_plugins = 0
@@ -47,7 +40,11 @@ Plug 'lepture/vim-jinja'
 Plug 'pangloss/vim-javascript'
 Plug 'alvan/vim-closetag'
 Plug 'maxmellon/vim-jsx-pretty'
-
+Plug 'honza/vim-snippets'
+Plug 'sirver/ultisnips'
+Plug 'chiel92/vim-autoformat'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'majutsushi/tagbar'
 call plug#end()
 
 filetype plugin indent on
@@ -249,5 +246,14 @@ colorscheme onedark
 filetype on
 filetype plugin indent on
 
-autocmd FileType python map <buffer> <F5> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
-autocmd FileType python imap <buffer> <F5> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
+
+set clipboard=unnamed
+
+" c++
+filetype on
+filetype indent on
+syntax enable
+autocmd BufNewFile *.cpp execute "0r ~/.vim/template/".input("Template name: ").".cpp"
+map <F9> :!g++ -g % -o %:r && ./%:r <CR>
