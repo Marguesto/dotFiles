@@ -1,0 +1,4 @@
+
+rofi.color-window: #131926, #000000, #999999
+rofi.color-normal: #131926, #ffffff, #131926 
+rofi.color-active: #131926, #ffffff, #000000 
