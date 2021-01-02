@@ -1,29 +1,3 @@
-"Vundle 
-set nocompatible              " be iMproved, required
-filetype off                  " required
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-Plugin 'valloric/youcompleteme'
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-"all of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-let g:vimspector_enable_mappings = 'HUMAN'
-
-" plugins
-let need_to_install_plugins = 0
-if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    let need_to_install_plugins = 1
-endif
-
 call plug#begin()
 Plug 'tpope/vim-sensible'
 Plug 'itchyny/lightline.vim'
@@ -45,17 +19,11 @@ Plug 'sirver/ultisnips'
 Plug 'chiel92/vim-autoformat'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'majutsushi/tagbar'
+Plug 'neoclide/coc.nvim'
 call plug#end()
 
 filetype plugin indent on
 syntax on
-
-if need_to_install_plugins == 1
-    echo "Installing plugins..."
-    silent! PlugInstall
-    echo "Done!"
-    q
-endif
 
 " always show the status bar
 set laststatus=2
@@ -87,7 +55,6 @@ au BufNewFile,BufRead *.js, *.html, *.css
     \ set shiftwidth=2
 
 "Flagging Unnecessary Whitespace
-highlight BadWhitespace ctermbg=red guibg=darkred
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 
 " sane editing
@@ -132,7 +99,7 @@ endfunction
 
 " lightline
 set noshowmode
-let g:lightline = { 'colorscheme': 'onedark' }
+
 
 " code folding
 set foldmethod=indent
@@ -184,28 +151,6 @@ nmap <leader>x :bd<CR>
 " restore place in file from previous session
 autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" file browser
-let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-let NERDTreeMinimalUI = 1
-let g:nerdtree_open = 0
-map <leader>n :call NERDTreeToggle()<CR>
-function NERDTreeToggle()
-    NERDTreeTabsToggle
-    if g:nerdtree_open == 1
-        let g:nerdtree_open = 0
-    else
-        let g:nerdtree_open = 1
-        wincmd p
-    endif
-endfunction
-
-function! StartUp()
-    if 0 == argc()
-        NERDTree
-    end
-endfunction
-autocmd VimEnter * call StartUp()
-
 " syntastic
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -238,13 +183,11 @@ endfunction
 
 inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()" plugins
 
-
-
-" color scheme
 syntax on
-colorscheme onedark
 filetype on
 filetype plugin indent on
+
+"python3
 
 autocmd FileType python map <buffer> <F9> :w<CR>:exec '!python3' shellescape(@%, 1)<CR>
 autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellescape(@%, 1)<CR>
@@ -252,8 +195,5 @@ autocmd FileType python imap <buffer> <F9> <esc>:w<CR>:exec '!python3' shellesca
 set clipboard=unnamed
 
 " c++
-filetype on
-filetype indent on
-syntax enable
 autocmd BufNewFile *.cpp execute "0r ~/.vim/template/".input("Template name: ").".cpp"
 map <F9> :!g++ -g % -o %:r && ./%:r <CR>
